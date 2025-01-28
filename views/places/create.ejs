@@ -1,0 +1,42 @@
+<% layout("layouts/app") %>
+    <h1 class="text-center">Add Place</h1>
+    <div class="col-6 offset-3">
+        <form action="/places" method="POST" class="validated-form" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="title" id="title" class="form-control" required>
+                <div class="invalid-feedback">
+                    Please provide a title.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" name="location" id="location" class="form-control" required>
+                <div class="invalid-feedback">
+                    Please provide a location.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="description" id="description" class="form-control" required></textarea>
+                <div class="invalid-feedback">
+                    Please provide a description.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="text" name="price" id="price" class="form-control" required>
+                <div class="invalid-feedback">
+                    Please provide a price.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Image URL</label>
+                <input type="text" name="image" id="image" class="form-control" required>
+                <div class="invalid-feedback">
+                    Please provide a image URL.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
