@@ -155,10 +155,13 @@ async function seedPlaces() {
         }
     ]
 
+    const newPlaces = places.map(place => {
+        return { ...place, author: "679a0f9957451b4fd290e742" }
+    })
 
     try {
         await Place.deleteMany({});
-        await Place.insertMany(places);
+        await Place.insertMany(newPlaces);
         console.log('Data berhasil disimpan');
     } catch (err) {
         console.log('Terjadi kesalahan saat menyimpan data:', err);

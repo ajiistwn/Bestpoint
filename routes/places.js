@@ -4,6 +4,7 @@ const wrapAsync = require("../utils/wrapAsync")
 const isValidObjectId = require("../middlewares/isValidObjectId")
 const router = express.Router()
 
+
 //models
 const Place = require("../models/place")
 
@@ -12,6 +13,7 @@ const { placeSchema } = require("../schemas/place")
 
 //middleware
 const isAuth = require("../middlewares/isAuth")
+const { isAuthorPlace } = require("../middlewares/isAuthor")
 const validatePlace = (req, res, next) => {
     const { title, location, price, description, image } = req.body
     const { error } = placeSchema.validate({ title, location, price, description, image })
@@ -43,13 +45,13 @@ router.post('/', isAuth, validatePlace, wrapAsync(async (req, res, next) => {
 }))
 
 
-router.get('/:id/edit', isAuth, isValidObjectId("/places"), wrapAsync(async (req, res) => {
+router.get('/:id/edit', isAuth, isAuthorPlace, isValidObjectId("/places"), wrapAsync(async (req, res) => {
     const { id } = req.params
     const place = await Place.findById(id)
     res.render("places/edit", { place })
 }))
 
-router.put('/:id', isAuth, isValidObjectId("/places"), validatePlace, wrapAsync(async (req, res) => {
+router.put('/:id', isAuth, isAuthorPlace, isValidObjectId("/places"), validatePlace, wrapAsync(async (req, res) => {
     const { id } = req.params
     const { title, location, price, description, image } = req.body
     await Place.findByIdAndUpdate(id, { title, location, price, description, image })
@@ -57,7 +59,7 @@ router.put('/:id', isAuth, isValidObjectId("/places"), validatePlace, wrapAsync(
     res.redirect("/places")
 }))
 
-router.delete('/:id', isAuth, isValidObjectId("/places"), wrapAsync(async (req, res) => {
+router.delete('/:id', isAuth, isAuthorPlace, isValidObjectId("/places"), wrapAsync(async (req, res) => {
     const { id } = req.params
     await Place.findByIdAndDelete(id)
     req.flash("success_msg", "Place deleted successfully")
@@ -66,7 +68,14 @@ router.delete('/:id', isAuth, isValidObjectId("/places"), wrapAsync(async (req, 
 
 router.get('/:id', isValidObjectId("/places"), wrapAsync(async (req, res) => {
     const { id } = req.params
-    const place = await Place.findById(id).populate("reviews")
+    const place = await Place.findById(id)
+        .populate({
+            path: "reviews",
+            populate: {
+                path: "author"
+            }
+        })
+        .populate("author")
     res.render("places/show", { place })
 }))
 
