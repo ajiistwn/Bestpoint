@@ -5,8 +5,8 @@ const { placeSchema } = require("../schemas/place")
 const { reviewSchema } = require("../schemas/review")
 
 module.exports.validatePlace = (req, res, next) => {
-    const { title, location, price, description, image } = req.body
-    const { error } = placeSchema.validate({ title, location, price, description, image })
+    const { title, location, price, description } = req.body
+    const { error } = placeSchema.validate({ title, location, price, description })
     if (error) {
         console.log(error)
         const msg = error.details.map(el => el.message).join(",")
