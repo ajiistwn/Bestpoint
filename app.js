@@ -12,6 +12,7 @@ const LocalStrategy = require("passport-local")
 const User = require("./models/user")
 const port = 3000
 
+
 mongoose.connect("mongodb://127.0.0.1/bestpoint")
     .then((result) => {
         console.log("success connect to mongodb")

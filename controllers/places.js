@@ -1,5 +1,6 @@
 const Place = require("../models/place")
 const fs = require("fs")
+const { geocode, geometry } = require("../utils/hereMaps")
 const ExpressError = require("../utils/ErrorHandler")
 
 
@@ -16,8 +17,12 @@ module.exports.store = async (req, res, next) => {
     const { title, location, price, description, image } = req.body
 
     const place = new Place({ title, location, price, description, image })
+    const geoData = await geometry(req.body.location)
+    console.log(location, geoData)
+
     place.author = req.user._id
     place.images = images
+    place.geometry = geoData
 
     await place.save()
 

@@ -1,12 +1,24 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 const Review = require("./review")
+const { required } = require("joi")
 
 const placeSchema = new Schema({
     title: String,
     price: Number,
     description: String,
     location: String,
+    geometry: {
+        type: {
+            type: String,
+            enum: ["Point"],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     images: [{
         url: String,
         filename: String
