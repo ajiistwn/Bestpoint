@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Place = require('../models/place');
-// const hereMaps = require('../utils/hereMaps');
+const hereMaps = require('../utils/hereMaps');
 
 mongoose.connect('mongodb://127.0.0.1/bestpoint')
     .then((result) => {
@@ -12,13 +12,7 @@ mongoose.connect('mongodb://127.0.0.1/bestpoint')
 
 async function seedPlaces() {
     const places = [
-        {
-            title: 'Taman Mini Indonesia Indah',
-            price: 20000,
-            description: 'Taman hiburan keluarga dengan berbagai replika bangunan dari seluruh Indonesia',
-            location: 'Taman Mini Indonesia Indah, Jakarta',
-            image: 'https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-        },
+
         {
             title: 'Pantai Kuta',
             price: 0,
@@ -48,13 +42,6 @@ async function seedPlaces() {
             image: 'https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
         },
         {
-            title: 'Pantai Tanjung Aan',
-            price: 10000,
-            description: 'Pantai dengan pasir berwarna putih dan air laut yang jernih di Lombok, Nusa Tenggara Barat',
-            location: 'Pantai Tanjung Aan, Lombok, West Nusa Tenggara',
-            image: 'https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-        },
-        {
             title: 'Bukit Bintang',
             price: 0,
             description: 'Kawasan perbelanjaan dan hiburan di Kuala Lumpur, Malaysia',
@@ -69,13 +56,6 @@ async function seedPlaces() {
             image: 'https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
         },
         {
-            title: 'Danau Toba',
-            price: 0,
-            description: 'Danau vulkanik terbesar di Indonesia yang terletak di Sumatera Utara',
-            location: 'Danau Toba, North Sumatra',
-            image: 'https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-        },
-        {
             title: 'Kawah Ijen',
             price: 100000,
             description: 'Kawah vulkanik dengan fenomena blue fire di Banyuwangi, Jawa Timur',
@@ -87,14 +67,6 @@ async function seedPlaces() {
             price: 0,
             description: 'Pantai di Bali yang cocok untuk berenang dan melihat matahari terbit',
             location: 'Pantai Sanur, Denpasar, Bali',
-            image: 'https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-        },
-
-        {
-            title: 'Candi Borobudur',
-            price: 25000,
-            description: 'Candi Buddha terbesar di dunia yang terletak di Magelang, Jawa Tengah',
-            location: 'Candi Borobudur, Borobudur, Magelang, Central Java',
             image: 'https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
         },
         {
@@ -133,13 +105,6 @@ async function seedPlaces() {
             image: 'https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
         },
         {
-            title: 'Gunung Merbabu',
-            price: 50000,
-            description: 'Gunung yang terletak di Jawa Tengah dengan pemandangan matahari terbit yang indah',
-            location: 'Gunung Merbabu, Central Java',
-            image: 'https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-        },
-        {
             title: 'Pulau Lombok',
             price: 0,
             description: 'Pulau di Indonesia yang terkenal dengan keindahan pantainya',
@@ -155,18 +120,43 @@ async function seedPlaces() {
         }
     ]
 
-    const newPlaces = places.map(place => {
-        return {
-            ...place, author: "679a0f9957451b4fd290e742", images: {
-                url: "public\\images\\image-1738568521941-826667711.jpg",
-                filename: "image-1738568521941-826667711.jpg"
+    const newPlace = await Promise.all(places.map(async (place) => {
+
+        try {
+            let geoData = await hereMaps.geometry(place.location);
+
+            // Jika tidak ada data geolokasi, fallback ke koordinat default
+            if (!geoData) {
+                geoData = { type: 'Point', coordinates: [116.32883, -8.90952] };
             }
+
+            return {
+                ...place, // Menyertakan properti tempat lain
+                author: '679a0f9957451b4fd290e742',
+                images: {
+                    url: 'public\\images\\image-1738510846624-743104677.jpg',
+                    filename: 'image-1738510846624-743104677.jpg'
+                },
+                geometry: geoData // Tidak perlu spread jika geoData sudah sesuai format
+            };
+        } catch (error) {
+            console.error(`Error fetching geo data for place ${place.name}:`, error);
+            // Menyertakan fallback untuk error
+            return {
+                ...place,
+                author: '679a0f9957451b4fd290e742',
+                images: {
+                    url: 'public\\images\\image-1738510846596-167965562.jpg',
+                    filename: 'image-image-1738510846596-167965562.jpg'
+                },
+                geometry: { type: 'Point', coordinates: [116.32883, -8.90952] }
+            };
         }
-    })
+    }))
 
     try {
         await Place.deleteMany({});
-        await Place.insertMany(newPlaces);
+        await Place.insertMany(newPlace);
         console.log('Data berhasil disimpan');
     } catch (err) {
         console.log('Terjadi kesalahan saat menyimpan data:', err);

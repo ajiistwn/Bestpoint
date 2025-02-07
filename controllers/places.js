@@ -40,6 +40,7 @@ module.exports.show = async (req, res) => {
             }
         })
         .populate("author")
+    // console.log(place)
     res.render("places/show", { place })
 }
 
@@ -52,9 +53,9 @@ module.exports.edit = async (req, res) => {
 module.exports.update = async (req, res) => {
     const { id } = req.params
     const { title, location, price, description } = req.body
-    const place = await Place.findByIdAndUpdate(id, { title, location, price, description })
+    const geoData = await geometry(location)
+    const newPlace = await Place.findByIdAndUpdate(id, { title, location, price, description, geometry: geoData })
     if (req.files && req.files.length > 0) {
-
         place.images.forEach(image => {
             fs.unlink(image.url, err => new ExpressError(err))
         });
@@ -64,7 +65,7 @@ module.exports.update = async (req, res) => {
             url: file.path,
             filename: file.filename
         }))
-        place.images = images
+        newPlace.images = images
         place.save()
     }
 
